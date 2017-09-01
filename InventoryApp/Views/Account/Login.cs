@@ -1,14 +1,8 @@
 ﻿using InventoryApp.Models;
 using InventoryApp.Services;
+using InventoryApp.Views.Category;
 using log4net;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace InventoryApp.Views.Account
@@ -31,6 +25,18 @@ namespace InventoryApp.Views.Account
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            ResetErrorControls();
+
+            if (string.IsNullOrWhiteSpace(txtUserName.Text))
+            {
+                errorProvider.SetError(txtUserName, "Please enter username.");
+            }
+
+            if (string.IsNullOrWhiteSpace(txtPassword.Text))
+            {
+                errorProvider.SetError(txtPassword, "Please enter password.");
+            }
+
             try
             {
                 User user = new User() { UserName = txtUserName.Text, Password = txtPassword.Text };
@@ -39,6 +45,10 @@ namespace InventoryApp.Views.Account
 
                 if (isValidLogin)
                 {
+                    this.Hide();
+                    Dashboard dashboard = new Dashboard();
+                    dashboard.Show();
+
                     Log.Error($"Login success.");
                 }
                 else
@@ -49,9 +59,15 @@ namespace InventoryApp.Views.Account
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Internal Server Error.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Internal Server Error.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Log.Error($"Login request failed.", ex);
             }
+        }
+
+        private void ResetErrorControls()
+        {
+            errorProvider.SetError(txtUserName, "");
+            errorProvider.SetError(txtPassword, "");
         }
     }
 }

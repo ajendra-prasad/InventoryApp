@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using InventoryApp.Views.Category;
 
 namespace InventoryApp.UserControls
 {
@@ -17,9 +11,18 @@ namespace InventoryApp.UserControls
             InitializeComponent();
         }
 
-        private void contextMenuStrip2_Opening(object sender, CancelEventArgs e)
+        private void addNewCategoryMenuItem_Click(object sender, EventArgs e)
         {
+            this.Parent.Dispose();
+            AddCategory addCategory = new AddCategory();
+            addCategory.Show();
+        }
 
+        private void listCategoriesMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Parent.Dispose();
+            ListCategory listCategory = new ListCategory();
+            listCategory.Show();
         }
     }
 }
