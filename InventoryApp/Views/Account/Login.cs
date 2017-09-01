@@ -1,5 +1,6 @@
 ﻿using InventoryApp.Models;
 using InventoryApp.Services;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +15,7 @@ namespace InventoryApp.Views.Account
 {
     public partial class Login : Form
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly AuthenticationService _authenticationService;
 
         public Login()
@@ -37,20 +39,18 @@ namespace InventoryApp.Views.Account
 
                 if (isValidLogin)
                 {
-                    //Session["AdminLogin"] = true; ;
-                    //return RedirectToAction("List", "Driver");
+                    Log.Error($"Login success.");
                 }
                 else
                 {
-                    //ModelState.AddModelError("", "Invalid email or password.");
+                    Log.Error($"Login failed.");
                     MessageBox.Show("Invalid email or password.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Internal Server Error.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                //Log.Error($"Admin login request failed. {Environment.NewLine} {JsonConvert.SerializeObject(model)}", ex);
-                //ModelState.AddModelError("", ex.Message);
+                Log.Error($"Login request failed.", ex);
             }
         }
     }
